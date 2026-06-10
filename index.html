@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSAN Deli Serdang — Budaya Sekolah Aman dan Nyaman</title>
+<meta name="description" content="Portal resmi Pokja Budaya Sekolah Aman dan Nyaman (BSAN) Kabupaten Deli Serdang. Informasi, kanal aduan, dan monitoring penyelenggaraan BSAN.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="wadah nav-isi">
+    <a href="index.html" class="brand">
+      <div class="logo">B</div>
+      <div>BSAN Deli Serdang<small>Pokja Budaya Sekolah Aman &amp; Nyaman</small></div>
+    </a>
+    <div class="menu" id="menu">
+      <a href="tentang.html">Tentang BSAN</a>
+      <a href="dokumen.html">Dokumen</a>
+      <a href="berita.html">Berita</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="aduan.html" class="tombol">Lapor Aduan</a>
+    </div>
+    <button class="burger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wadah hero-isi">
+    <span class="pita">Permendikdasmen No. 6 Tahun 2026 &middot; Kepmendikdasmen No. 17 Tahun 2026</span>
+    <h1>Mewujudkan Sekolah yang <span>Aman</span> dan <span>Nyaman</span> bagi Seluruh Warga Sekolah</h1>
+    <p>Portal resmi Kelompok Kerja (Pokja) Budaya Sekolah Aman dan Nyaman Kabupaten Deli Serdang — wadah informasi, edukasi, kanal aduan, dan pemantauan penyelenggaraan BSAN pada jenjang PAUD, SD, dan SMP.</p>
+    <div class="hero-aksi">
+      <a href="aduan.html" class="tombol putih">📢 Sampaikan Aduan</a>
+      <a href="tentang.html" class="tombol garis">Pelajari BSAN</a>
+    </div>
+  </div>
+</header>
+
+<!-- STATISTIK -->
+<div class="wadah statistik">
+  <div class="stat-kartu">
+    <div class="stat"><b id="st-sekolah">—</b><span>Sekolah Binaan</span></div>
+    <div class="stat"><b id="st-monitoring">—</b><span>Sekolah Telah Lapor</span></div>
+    <div class="stat"><b id="st-aduan">—</b><span>Aduan Ditangani</span></div>
+    <div class="stat"><b>22</b><span>Kecamatan</span></div>
+  </div>
+</div>
+
+<!-- TENTANG / 4 ASPEK -->
+<section class="seksi" id="tentang">
+  <div class="wadah">
+    <div class="kepala">
+      <span class="label">Empat Aspek BSAN</span>
+      <h2>Apa itu Budaya Sekolah Aman dan Nyaman?</h2>
+      <p>Keseluruhan tata nilai, sikap, kebiasaan, dan perilaku yang dibangun di lingkungan sekolah untuk menjamin lingkungan belajar yang kondusif melalui empat aspek berikut.</p>
+    </div>
+    <div class="grid4">
+      <div class="aspek">
+        <div class="ikon">🕌</div>
+        <h3>Pemenuhan Kebutuhan Spiritual</h3>
+        <p>Kebebasan beribadah, penguatan nilai spiritual, kerukunan antarumat beragama, serta sarana ibadah yang layak dan inklusif.</p>
+      </div>
+      <div class="aspek">
+        <div class="ikon">🛡️</div>
+        <h3>Pelindungan Fisik</h3>
+        <p>Sarana prasarana sesuai standar, lingkungan sehat dan bersih, akomodasi layak bagi penyandang disabilitas, serta sistem keamanan sekolah.</p>
+      </div>
+      <div class="aspek">
+        <div class="ikon">💙</div>
+        <h3>Kesejahteraan Psikologis &amp; Sosiokultural</h3>
+        <p>Kesempatan setara tanpa diskriminasi, dukungan psikososial, lingkungan inklusif, dan relasi antarwarga sekolah yang saling menghormati.</p>
+      </div>
+      <div class="aspek">
+        <div class="ikon">💻</div>
+        <h3>Keadaban &amp; Keamanan Digital</h3>
+        <p>Adab berinteraksi di ruang digital, literasi digital menangkal hoaks dan kejahatan siber, serta pelindungan data pribadi warga sekolah.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA ADUAN -->
+<section class="wadah" id="aduan-cta">
+  <div class="cta">
+    <div>
+      <h2>Melihat atau Mengalami Pelanggaran?</h2>
+      <p>Sampaikan aduan Anda melalui kanal resmi Pokja BSAN Deli Serdang. Identitas pelapor dilindungi dan setiap aduan ditindaklanjuti sesuai pedoman.</p>
+      <div class="cta-poin">
+        <span>✅ Tanpa login</span>
+        <span>🕵️ Boleh anonim</span>
+        <span>🔒 Kerahasiaan terjaga</span>
+        <span>🎫 Dapat nomor tiket</span>
+      </div>
+    </div>
+    <div class="aksi">
+      <a href="aduan.html" class="tombol putih">Buat Aduan</a>
+      <a href="cek-status.html" class="tombol garis">Cek Status Aduan</a>
+    </div>
+  </div>
+</section>
+
+<!-- LAYANAN -->
+<section class="seksi abu" id="layanan">
+  <div class="wadah">
+    <div class="kepala">
+      <span class="label">Layanan Kami</span>
+      <h2>Layanan Pokja BSAN Deli Serdang</h2>
+    </div>
+    <div class="grid3">
+      <div class="layanan">
+        <div class="ikon">📚</div>
+        <h3>Pusat Regulasi &amp; Dokumen</h3>
+        <p>Unduh Permendikdasmen 6/2026, Kepmendikdasmen 17/2026, SE Sesjen 3/2026, SK Pokja, panduan, dan materi sosialisasi.</p>
+        <a class="tautan" href="dokumen.html">Buka Dokumen →</a>
+      </div>
+      <div class="layanan">
+        <div class="ikon">📋</div>
+        <h3>Monitoring Sekolah</h3>
+        <p>Sekolah melaporkan penyelenggaraan BSAN: tata tertib, kesepakatan kelas, edukasi warga sekolah, dan indikator lainnya.</p>
+        <a class="tautan" href="monitoring.html">Isi Monitoring →</a>
+      </div>
+      <div class="layanan">
+        <div class="ikon">🤝</div>
+        <h3>Edukasi &amp; Praktik Baik</h3>
+        <p>Materi penguatan karakter, Gerakan Sahabat Hebat (3M), Modul Pembiasaan Hebat, dan panduan pendampingan orang tua.</p>
+        <a class="tautan" href="berita.html">Lihat Praktik Baik →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BERITA -->
+<section class="seksi" id="berita">
+  <div class="wadah">
+    <div class="kepala">
+      <span class="label">Informasi Terkini</span>
+      <h2>Berita &amp; Praktik Baik</h2>
+    </div>
+    <div class="berita-grid" id="daftar-berita">
+      <div class="muat">Memuat berita…</div>
+    </div>
+    <p style="text-align:center;margin-top:30px"><a href="berita.html" class="tombol netral">Lihat Semua Berita</a></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="tanpa-jarak">
+  <div class="wadah">
+    <div class="footer-grid">
+      <div>
+        <h4>Pokja BSAN Kabupaten Deli Serdang</h4>
+        <p>Kelompok Kerja Budaya Sekolah Aman dan Nyaman dibentuk berdasarkan Permendikdasmen No. 6 Tahun 2026 dan SE Sesjen No. 3 Tahun 2026. Koordinator: Dinas Pendidikan Kabupaten Deli Serdang.</p>
+      </div>
+      <div>
+        <h4>Navigasi</h4>
+        <a href="tentang.html">Tentang BSAN</a>
+        <a href="aduan.html">Kanal Aduan</a>
+        <a href="monitoring.html">Monitoring Sekolah</a>
+        <a href="dokumen.html">Regulasi &amp; Dokumen</a>
+        <a href="admin.html">Admin</a>
+      </div>
+      <div>
+        <h4>Tautan Resmi</h4>
+        <a href="https://cerdasberkarakter.kemendikdasmen.go.id/budayasekolahamannyaman/" target="_blank" rel="noopener">Dasbor BSAN Kemendikdasmen</a>
+        <a href="https://cerdasberkarakter.kemendikdasmen.go.id/modulpembiasaanhebat/" target="_blank" rel="noopener">Modul Pembiasaan Hebat</a>
+        <a href="https://cerdasberkarakter.kemendikdasmen.go.id/buku-panduan-pendamping-orangtua/" target="_blank" rel="noopener">Panduan Pendamping Orang Tua</a>
+      </div>
+    </div>
+    <div class="footer-bawah">© 2026 Pokja BSAN Kabupaten Deli Serdang · #SehatCerdasBerkarakter</div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+// ---------- Statistik beranda ----------
+(async function () {
+  try {
+    const d = await apiGet({ action: "stats" });
+    document.getElementById("st-sekolah").textContent = d.sekolah_binaan || "—";
+    document.getElementById("st-monitoring").textContent = d.monitoring || "0";
+    document.getElementById("st-aduan").textContent = d.aduan || "0";
+  } catch (e) {
+    // Mode draft: tampilkan placeholder
+    document.getElementById("st-sekolah").textContent = "1.000+";
+    document.getElementById("st-monitoring").textContent = "0";
+    document.getElementById("st-aduan").textContent = "0";
+  }
+})();
+
+// ---------- 3 berita terbaru ----------
+(async function () {
+  const wadah = document.getElementById("daftar-berita");
+  const IKON = { "Kegiatan Pokja": "📰", "Praktik Baik": "🏫", "Edukasi": "🎓", "Pengumuman": "📣" };
+  try {
+    const d = await apiGet({ action: "berita", limit: 3 });
+    if (!d.items || !d.items.length) {
+      wadah.innerHTML = '<div class="muat">Belum ada berita.</div>';
+      return;
+    }
+    wadah.innerHTML = d.items.map(function (b) {
+      const gambar = b.gambar_url
+        ? '<div class="gambar" style="background-image:url(\'' + escapeHtml(b.gambar_url) + '\')"></div>'
+        : '<div class="gambar">' + (IKON[b.kategori] || "📰") + "</div>";
+      return (
+        '<a href="berita-detail.html?id=' + encodeURIComponent(b.id) + '" class="kartu-berita">' +
+        gambar +
+        '<div class="isi"><span class="meta">' + escapeHtml(b.kategori) + " · " + fmtTanggal(b.tanggal) + "</span>" +
+        "<h3>" + escapeHtml(b.judul) + "</h3>" +
+        "<p>" + escapeHtml(String(b.isi || "").substring(0, 110)) + "…</p></div></a>"
+      );
+    }).join("");
+  } catch (e) {
+    // Mode draft: contoh berita placeholder
+    wadah.innerHTML =
+      '<a href="#" class="kartu-berita"><div class="gambar">📰</div><div class="isi"><span class="meta">Kegiatan Pokja</span><h3>Sosialisasi BSAN bagi Kepala Sekolah se-Kabupaten Deli Serdang</h3><p>Pokja BSAN menggelar sosialisasi Permendikdasmen 6/2026 kepada kepala sekolah jenjang PAUD, SD, dan SMP…</p></div></a>' +
+      '<a href="#" class="kartu-berita"><div class="gambar">🏫</div><div class="isi"><span class="meta">Praktik Baik</span><h3>Kesepakatan Kelas Partisipatif di SD Negeri Percontohan</h3><p>Murid dilibatkan menyusun kesepakatan kelas yang memuat nilai kebajikan dan interaksi saling menghargai…</p></div></a>' +
+      '<a href="#" class="kartu-berita"><div class="gambar">🎓</div><div class="isi"><span class="meta">Edukasi</span><h3>Gerakan Sahabat Hebat: Melihat, Mendengarkan, Menghubungkan</h3><p>Murid berperan sebagai pendukung sebaya melalui pendekatan 3M untuk membantu teman yang membutuhkan…</p></div></a>';
+  }
+})();
+</script>
+</body>
+</html>

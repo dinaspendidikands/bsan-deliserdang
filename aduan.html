@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanal Aduan — BSAN Deli Serdang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wadah nav-isi">
+    <a href="index.html" class="brand">
+      <div class="logo">B</div>
+      <div>BSAN Deli Serdang<small>Pokja Budaya Sekolah Aman &amp; Nyaman</small></div>
+    </a>
+    <div class="menu" id="menu">
+      <a href="tentang.html">Tentang BSAN</a>
+      <a href="dokumen.html">Dokumen</a>
+      <a href="berita.html">Berita</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="cek-status.html" class="tombol">Cek Status Aduan</a>
+    </div>
+    <button class="burger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<header class="hero-mini">
+  <div class="wadah">
+    <h1>📢 Kanal Aduan BSAN</h1>
+    <p>Sampaikan dugaan pelanggaran keamanan dan kenyamanan di lingkungan sekolah. Tanpa login, boleh anonim, identitas pelapor dilindungi.</p>
+  </div>
+</header>
+
+<section class="seksi rapat">
+  <div class="wadah">
+
+    <!-- FORM -->
+    <div class="form-kartu" id="form-bungkus">
+      <div class="info-kotak">
+        🔒 <b>Pernyataan Privasi:</b> Data aduan hanya dapat diakses oleh Pokja BSAN Kabupaten Deli Serdang dan digunakan semata-mata untuk penanganan aduan. Identitas pelapor dilindungi dan tidak akan ditampilkan di halaman publik mana pun.
+      </div>
+
+      <form id="form-aduan" novalidate>
+
+        <!-- Identitas -->
+        <div class="form-bagian">
+          <h3>1. Identitas Pelapor</h3>
+          <div class="field">
+            <label>Cara Melapor</label>
+            <div class="pilihan">
+              <label><input type="radio" name="anonim" value="N" checked> Dengan identitas</label>
+              <label><input type="radio" name="anonim" value="Y"> Anonim (tanpa identitas)</label>
+            </div>
+            <div class="bantuan">Aduan anonim tetap ditindaklanjuti. Dengan identitas, Pokja dapat menghubungi Anda bila perlu informasi tambahan.</div>
+          </div>
+          <div id="blok-identitas">
+            <div class="baris2">
+              <div class="field">
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" placeholder="Nama Anda">
+              </div>
+              <div class="field">
+                <label for="peran">Peran Anda</label>
+                <select id="peran" name="peran">
+                  <option value="">— Pilih peran —</option>
+                  <option>Murid</option>
+                  <option>Guru</option>
+                  <option>Tenaga Kependidikan</option>
+                  <option>Orang Tua/Wali</option>
+                  <option>Masyarakat</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="kontak">Kontak (HP/WA/Email) <span class="ops">— opsional</span></label>
+              <input type="text" id="kontak" name="kontak" placeholder="Contoh: 0812xxxxxxx">
+            </div>
+          </div>
+        </div>
+
+        <!-- Lokasi kejadian -->
+        <div class="form-bagian">
+          <h3>2. Sekolah Terkait</h3>
+          <div class="baris2">
+            <div class="field">
+              <label for="jenjang">Jenjang <span style="color:var(--merah)">*</span></label>
+              <select id="jenjang" name="jenjang" required>
+                <option value="">— Pilih jenjang —</option>
+                <option>PAUD</option>
+                <option>SD</option>
+                <option>SMP</option>
+                <option>Lainnya</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="sekolah">Nama Sekolah <span style="color:var(--merah)">*</span></label>
+              <input type="text" id="sekolah" name="sekolah" required placeholder="Contoh: SD Negeri 101800 ...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Rincian -->
+        <div class="form-bagian">
+          <h3>3. Rincian Dugaan Pelanggaran</h3>
+          <div class="field">
+            <label for="kategori">Kategori Dugaan Pelanggaran <span style="color:var(--merah)">*</span></label>
+            <select id="kategori" name="kategori" required>
+              <option value="">— Pilih kategori —</option>
+              <option>Pelanggaran tata tertib sekolah</option>
+              <option>Pelanggaran kode etik</option>
+              <option>Dugaan kekerasan fisik</option>
+              <option>Dugaan kekerasan psikis/perundungan</option>
+              <option>Dugaan kekerasan seksual</option>
+              <option>Dugaan perundungan/kejahatan di ruang digital</option>
+              <option>Dugaan diskriminasi/intoleransi</option>
+              <option>Dugaan penyalahgunaan narkoba/zat terlarang</option>
+              <option>Lainnya</option>
+            </select>
+            <div class="bantuan">Pelanggaran terhadap peraturan perundang-undangan akan dirujuk Pokja kepada instansi yang berwenang.</div>
+          </div>
+          <div class="field">
+            <label for="uraian">Uraian Kejadian <span style="color:var(--merah)">*</span></label>
+            <textarea id="uraian" name="uraian" required placeholder="Ceritakan apa yang terjadi sejelas mungkin: siapa, apa, bagaimana…"></textarea>
+          </div>
+          <div class="baris2">
+            <div class="field">
+              <label for="waktu">Waktu Kejadian <span class="ops">— perkiraan</span></label>
+              <input type="date" id="waktu" name="waktu_kejadian">
+            </div>
+            <div class="field">
+              <label for="tempat">Tempat Kejadian</label>
+              <input type="text" id="tempat" name="tempat" placeholder="Contoh: ruang kelas, halaman sekolah, grup WA…">
+            </div>
+          </div>
+          <div class="field">
+            <label for="pihak">Pihak yang Terlibat <span class="ops">— opsional</span></label>
+            <input type="text" id="pihak" name="pihak_terlibat" placeholder="Sebutkan terduga pelanggar dan/atau korban bila diketahui">
+          </div>
+          <div class="field">
+            <label for="saksi">Saksi <span class="ops">— opsional, boleh lebih dari satu</span></label>
+            <textarea id="saksi" name="saksi" style="min-height:70px" placeholder="Nama/identitas saksi yang mengetahui kejadian, pisahkan dengan koma. Contoh: Budi (murid kelas 5), Ibu Ani (guru kelas)"></textarea>
+          </div>
+        </div>
+
+        <!-- Honeypot anti-spam (tidak terlihat manusia) -->
+        <div style="position:absolute;left:-9999px" aria-hidden="true">
+          <input type="text" name="website" id="hp-website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="peringatan" id="form-error" style="display:none"></div>
+
+        <button type="submit" class="tombol" id="tombol-kirim" style="width:100%;padding:15px">Kirim Aduan</button>
+        <p class="bantuan" style="text-align:center;margin-top:12px">Setelah terkirim Anda akan menerima <b>nomor tiket</b> untuk memantau status aduan.</p>
+      </form>
+    </div>
+
+    <!-- SUKSES -->
+    <div class="form-kartu tersembunyi" id="sukses-bungkus">
+      <div class="sukses-kotak">
+        <div style="font-size:46px">✅</div>
+        <h2 style="color:var(--biru-900);margin:10px 0 4px">Aduan Berhasil Dikirim</h2>
+        <p style="color:var(--teks-muda)">Simpan nomor tiket berikut untuk mengecek status penanganan:</p>
+        <div class="tiket" id="nomor-tiket">—</div>
+        <p style="color:var(--teks-muda);font-size:13.5px">Catat atau foto nomor ini. Nomor tiket <b>tidak dapat dimintakan ulang</b> demi menjaga kerahasiaan pelapor.</p>
+        <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="cek-status.html" class="tombol">Cek Status Aduan</a>
+          <a href="index.html" class="tombol netral">Kembali ke Beranda</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wadah">
+    <div class="footer-bawah" style="border:none;padding:0">© 2026 Pokja BSAN Kabupaten Deli Serdang · #SehatCerdasBerkarakter</div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+// Tampil/sembunyikan blok identitas
+document.querySelectorAll('input[name="anonim"]').forEach(function (r) {
+  r.addEventListener("change", function () {
+    document.getElementById("blok-identitas").style.display = this.value === "Y" ? "none" : "";
+  });
+});
+
+document.getElementById("form-aduan").addEventListener("submit", async function (ev) {
+  ev.preventDefault();
+  const f = ev.target;
+  const err = document.getElementById("form-error");
+  const tombol = document.getElementById("tombol-kirim");
+  err.style.display = "none";
+
+  const anonim = f.querySelector('input[name="anonim"]:checked').value;
+  const data = {
+    action: "aduan_baru",
+    anonim: anonim,
+    nama: anonim === "Y" ? "" : f.nama.value.trim(),
+    peran: anonim === "Y" ? "" : f.peran.value,
+    kontak: anonim === "Y" ? "" : f.kontak.value.trim(),
+    jenjang: f.jenjang.value,
+    sekolah: f.sekolah.value.trim(),
+    kategori: f.kategori.value,
+    uraian: f.uraian.value.trim(),
+    waktu_kejadian: f.waktu_kejadian.value,
+    tempat: f.tempat.value.trim(),
+    pihak_terlibat: f.pihak_terlibat.value.trim(),
+    saksi: f.saksi.value.trim(),
+    website: document.getElementById("hp-website").value, // honeypot
+  };
+
+  // Validasi sederhana
+  if (!data.jenjang || !data.sekolah || !data.kategori || !data.uraian) {
+    err.textContent = "Mohon lengkapi kolom bertanda * (jenjang, nama sekolah, kategori, dan uraian kejadian).";
+    err.style.display = "block";
+    window.scrollTo({ top: err.offsetTop - 120, behavior: "smooth" });
+    return;
+  }
+  if (anonim === "N" && !data.nama) {
+    err.textContent = "Anda memilih melapor dengan identitas — mohon isi nama, atau pilih opsi Anonim.";
+    err.style.display = "block";
+    return;
+  }
+
+  tombol.disabled = true;
+  tombol.textContent = "Mengirim…";
+  try {
+    const res = await apiPost(data);
+    document.getElementById("nomor-tiket").textContent = res.ticket_id;
+    document.getElementById("form-bungkus").classList.add("tersembunyi");
+    document.getElementById("sukses-bungkus").classList.remove("tersembunyi");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (e) {
+    err.textContent =
+      e.message === "API_BELUM_DIKONFIGURASI"
+        ? "Mode draft: backend belum terhubung, aduan belum dapat dikirim. (Pesan ini hilang setelah deploy selesai.)"
+        : "Gagal mengirim aduan: " + e.message + ". Periksa koneksi internet lalu coba lagi.";
+    err.style.display = "block";
+    tombol.disabled = false;
+    tombol.textContent = "Kirim Aduan";
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulasi &amp; Dokumen — BSAN Deli Serdang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wadah nav-isi">
+    <a href="index.html" class="brand">
+      <div class="logo">B</div>
+      <div>BSAN Deli Serdang<small>Pokja Budaya Sekolah Aman &amp; Nyaman</small></div>
+    </a>
+    <div class="menu" id="menu">
+      <a href="tentang.html">Tentang BSAN</a>
+      <a href="dokumen.html">Dokumen</a>
+      <a href="berita.html">Berita</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="aduan.html" class="tombol">Lapor Aduan</a>
+    </div>
+    <button class="burger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<header class="hero-mini">
+  <div class="wadah">
+    <h1>Regulasi &amp; Dokumen</h1>
+    <p>Unduh peraturan, pedoman, panduan, dan materi sosialisasi penyelenggaraan Budaya Sekolah Aman dan Nyaman.</p>
+  </div>
+</header>
+
+<section class="seksi rapat">
+  <div class="wadah" style="max-width:860px">
+    <div id="daftar-dokumen"><div class="muat">Memuat daftar dokumen…</div></div>
+
+    <h2 style="color:var(--biru-900);font-size:21px;margin:42px 0 18px">Tautan Resmi Kemendikdasmen</h2>
+    <a class="dok-item" href="https://cerdasberkarakter.kemendikdasmen.go.id/budayasekolahamannyaman/" target="_blank" rel="noopener">
+      <div class="ikon">🌐</div>
+      <div class="info"><span class="kat">Tautan Resmi</span><h3>Dasbor BSAN Kemendikdasmen</h3><p>Informasi lengkap BSAN dan pelaporan SK Pokja daerah.</p></div>
+      <span class="tautan">Kunjungi →</span>
+    </a>
+    <a class="dok-item" href="https://cerdasberkarakter.kemendikdasmen.go.id/modulpembiasaanhebat/" target="_blank" rel="noopener">
+      <div class="ikon">📖</div>
+      <div class="info"><span class="kat">Tautan Resmi</span><h3>Modul Pembiasaan Hebat (PKH)</h3><p>Modul pembelajaran kokurikuler untuk diimplementasikan sekolah.</p></div>
+      <span class="tautan">Kunjungi →</span>
+    </a>
+    <a class="dok-item" href="https://cerdasberkarakter.kemendikdasmen.go.id/buku-panduan-pendamping-orangtua/" target="_blank" rel="noopener">
+      <div class="ikon">👨‍👩‍👧</div>
+      <div class="info"><span class="kat">Tautan Resmi</span><h3>Buku Panduan Pendampingan Orang Tua/Wali</h3><p>Panduan untuk disosialisasikan sekolah kepada orang tua/wali.</p></div>
+      <span class="tautan">Kunjungi →</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wadah">
+    <div class="footer-grid">
+      <div>
+        <h4>Pokja BSAN Kabupaten Deli Serdang</h4>
+        <p>Kelompok Kerja Budaya Sekolah Aman dan Nyaman dibentuk berdasarkan Permendikdasmen No. 6 Tahun 2026 dan SE Sesjen No. 3 Tahun 2026. Koordinator: Dinas Pendidikan Kabupaten Deli Serdang.</p>
+      </div>
+      <div>
+        <h4>Navigasi</h4>
+        <a href="tentang.html">Tentang BSAN</a>
+        <a href="aduan.html">Kanal Aduan</a>
+        <a href="monitoring.html">Monitoring Sekolah</a>
+        <a href="dokumen.html">Regulasi &amp; Dokumen</a>
+        <a href="admin.html">Admin</a>
+      </div>
+      <div>
+        <h4>Tautan Resmi</h4>
+        <a href="https://cerdasberkarakter.kemendikdasmen.go.id/budayasekolahamannyaman/" target="_blank" rel="noopener">Dasbor BSAN Kemendikdasmen</a>
+        <a href="https://cerdasberkarakter.kemendikdasmen.go.id/modulpembiasaanhebat/" target="_blank" rel="noopener">Modul Pembiasaan Hebat</a>
+        <a href="https://cerdasberkarakter.kemendikdasmen.go.id/buku-panduan-pendamping-orangtua/" target="_blank" rel="noopener">Panduan Pendamping Orang Tua</a>
+      </div>
+    </div>
+    <div class="footer-bawah">© 2026 Pokja BSAN Kabupaten Deli Serdang · #SehatCerdasBerkarakter</div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+(async function () {
+  const wadah = document.getElementById("daftar-dokumen");
+  const IKON = { "Regulasi": "📜", "Pedoman": "📘", "Panduan": "📗", "Materi Sosialisasi": "🖥️", "SK & Administrasi": "🗂️" };
+  try {
+    const d = await apiGet({ action: "dokumen" });
+    if (!d.items || !d.items.length) {
+      wadah.innerHTML = '<div class="muat">Belum ada dokumen yang diunggah.</div>';
+      return;
+    }
+    // Kelompokkan per kategori
+    const grup = {};
+    d.items.forEach(function (x) {
+      const k = x.kategori || "Lainnya";
+      (grup[k] = grup[k] || []).push(x);
+    });
+    let html = "";
+    Object.keys(grup).forEach(function (kat) {
+      html += '<h2 style="color:var(--biru-900);font-size:21px;margin:30px 0 18px">' + escapeHtml(kat) + "</h2>";
+      html += grup[kat].map(function (x) {
+        return (
+          '<a class="dok-item" href="' + escapeHtml(x.file_url) + '" target="_blank" rel="noopener">' +
+          '<div class="ikon">' + (IKON[kat] || "📄") + "</div>" +
+          '<div class="info"><span class="kat">' + escapeHtml(kat) + "</span>" +
+          "<h3>" + escapeHtml(x.judul) + "</h3>" +
+          "<p>" + escapeHtml(x.deskripsi || "") + "</p></div>" +
+          '<span class="tautan">Unduh →</span></a>'
+        );
+      }).join("");
+    });
+    wadah.innerHTML = html;
+  } catch (e) {
+    if (e.message === "API_BELUM_DIKONFIGURASI") {
+      // Mode draft: contoh isi
+      wadah.innerHTML =
+        '<h2 style="color:var(--biru-900);font-size:21px;margin:0 0 18px">Regulasi</h2>' +
+        '<a class="dok-item" href="#"><div class="ikon">📜</div><div class="info"><span class="kat">Regulasi</span><h3>Permendikdasmen No. 6 Tahun 2026</h3><p>Budaya Sekolah Aman dan Nyaman.</p></div><span class="tautan">Unduh →</span></a>' +
+        '<a class="dok-item" href="#"><div class="ikon">📘</div><div class="info"><span class="kat">Regulasi</span><h3>Kepmendikdasmen No. 17 Tahun 2026</h3><p>Pedoman Penyelenggaraan Budaya Sekolah Aman dan Nyaman.</p></div><span class="tautan">Unduh →</span></a>' +
+        '<a class="dok-item" href="#"><div class="ikon">📜</div><div class="info"><span class="kat">Regulasi</span><h3>SE Sesjen No. 3 Tahun 2026</h3><p>Penguatan Implementasi Penyelenggaraan BSAN.</p></div><span class="tautan">Unduh →</span></a>' +
+        '<div class="info-kotak kuning">⚠️ <b>Mode draft:</b> daftar di atas hanya contoh. Setelah backend terhubung, dokumen dikelola dari halaman Admin tanpa mengubah kode.</div>';
+    } else {
+      wadah.innerHTML = '<div class="peringatan">Gagal memuat dokumen. Coba muat ulang halaman.</div>';
+    }
+  }
+})();
+</script>
+</body>
+</html>

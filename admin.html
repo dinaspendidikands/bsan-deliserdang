@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — BSAN Deli Serdang</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body style="background:var(--biru-50)">
+
+<nav class="nav">
+  <div class="wadah nav-isi">
+    <a href="index.html" class="brand">
+      <div class="logo">B</div>
+      <div>BSAN Deli Serdang<small>Panel Admin Pokja</small></div>
+    </a>
+    <div class="menu" id="menu">
+      <a href="index.html">Lihat Website</a>
+      <a href="#" id="tombol-keluar" class="tombol kecil tersembunyi">Keluar</a>
+    </div>
+    <button class="burger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- ===== LOGIN ===== -->
+<section class="seksi" id="layar-login">
+  <div class="wadah">
+    <div class="form-kartu" style="max-width:440px;text-align:center">
+      <div style="font-size:42px">🔐</div>
+      <h2 style="color:var(--biru-900);margin:8px 0 6px">Masuk Panel Admin</h2>
+      <p style="color:var(--teks-muda);font-size:14px;margin-bottom:22px">Khusus pengurus Pokja BSAN Kabupaten Deli Serdang.</p>
+      <form id="form-login">
+        <div class="field" style="text-align:left">
+          <label for="token">Kode Akses</label>
+          <input type="password" id="token" placeholder="Masukkan kode akses admin" autocomplete="current-password">
+        </div>
+        <div class="peringatan" id="login-error" style="display:none"></div>
+        <button type="submit" class="tombol" id="tombol-login" style="width:100%">Masuk</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PANEL ===== -->
+<section class="seksi rapat tersembunyi" id="layar-panel">
+  <div class="wadah">
+
+    <div class="admin-tab">
+      <button data-tab="aduan" class="aktif">📢 Aduan</button>
+      <button data-tab="monitoring">📋 Monitoring</button>
+      <button data-tab="berita">📰 Berita</button>
+      <button data-tab="dokumen">📚 Dokumen</button>
+    </div>
+
+    <!-- TAB ADUAN -->
+    <div class="panel" id="tab-aduan">
+      <div class="panel-kepala">
+        <h2 style="margin:0">Daftar Aduan</h2>
+        <button class="tombol kecil netral" onclick="muatAduan()">↻ Muat Ulang</button>
+      </div>
+      <div id="isi-aduan"><div class="muat">Memuat…</div></div>
+    </div>
+
+    <!-- TAB MONITORING -->
+    <div class="panel tersembunyi" id="tab-monitoring">
+      <div class="panel-kepala">
+        <h2 style="margin:0">Rekap Monitoring Sekolah</h2>
+        <button class="tombol kecil netral" onclick="muatMonitoring()">↻ Muat Ulang</button>
+      </div>
+      <div id="isi-monitoring"><div class="muat">Memuat…</div></div>
+    </div>
+
+    <!-- TAB BERITA -->
+    <div class="panel tersembunyi" id="tab-berita">
+      <div class="panel-kepala">
+        <h2 style="margin:0">Kelola Berita</h2>
+        <button class="tombol kecil" onclick="bukaFormBerita()">＋ Tulis Berita</button>
+      </div>
+      <div id="isi-berita"><div class="muat">Memuat…</div></div>
+    </div>
+
+    <!-- TAB DOKUMEN -->
+    <div class="panel tersembunyi" id="tab-dokumen">
+      <div class="panel-kepala">
+        <h2 style="margin:0">Kelola Dokumen</h2>
+        <button class="tombol kecil" onclick="bukaFormDokumen()">＋ Tambah Dokumen</button>
+      </div>
+      <div id="isi-dokumen"><div class="muat">Memuat…</div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-latar tersembunyi" id="modal-latar">
+  <div class="modal" id="modal-isi"></div>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+/* ================= AUTENTIKASI ================= */
+let TOKEN = sessionStorage.getItem("bsan_token") || "";
+
+function tampilkanPanel() {
+  document.getElementById("layar-login").classList.add("tersembunyi");
+  document.getElementById("layar-panel").classList.remove("tersembunyi");
+  document.getElementById("tombol-keluar").classList.remove("tersembunyi");
+  muatAduan();
+}
+
+document.getElementById("form-login").addEventListener("submit", async function (ev) {
+  ev.preventDefault();
+  const err = document.getElementById("login-error");
+  const tombol = document.getElementById("tombol-login");
+  const token = document.getElementById("token").value.trim();
+  err.style.display = "none";
+  if (!token) return;
+  tombol.disabled = true; tombol.textContent = "Memeriksa…";
+  try {
+    await apiPost({ action: "login", token: token });
+    TOKEN = token;
+    sessionStorage.setItem("bsan_token", token);
+    tampilkanPanel();
+  } catch (e) {
+    err.textContent =
+      e.message === "API_BELUM_DIKONFIGURASI"
+        ? "Mode draft: backend belum terhubung."
+        : "Kode akses salah atau koneksi gagal.";
+    err.style.display = "block";
+  }
+  tombol.disabled = false; tombol.textContent = "Masuk";
+});
+
+document.getElementById("tombol-keluar").addEventListener("click", function (ev) {
+  ev.preventDefault();
+  sessionStorage.removeItem("bsan_token");
+  location.reload();
+});
+
+if (TOKEN) {
+  apiPost({ action: "login", token: TOKEN })
+    .then(tampilkanPanel)
+    .catch(function () { sessionStorage.removeItem("bsan_token"); });
+}
+
+/* ================= TAB ================= */
+document.querySelectorAll(".admin-tab button").forEach(function (b) {
+  b.addEventListener("click", function () {
+    document.querySelectorAll(".admin-tab button").forEach(function (x) { x.classList.remove("aktif"); });
+    b.classList.add("aktif");
+    ["aduan","monitoring","berita","dokumen"].forEach(function (t) {
+      document.getElementById("tab-" + t).classList.toggle("tersembunyi", t !== b.dataset.tab);
+    });
+    if (b.dataset.tab === "aduan") muatAduan();
+    if (b.dataset.tab === "monitoring") muatMonitoring();
+    if (b.dataset.tab === "berita") muatBerita();
+    if (b.dataset.tab === "dokumen") muatDokumen();
+  });
+});
+
+/* ================= MODAL ================= */
+function bukaModal(html) {
+  document.getElementById("modal-isi").innerHTML = html;
+  document.getElementById("modal-latar").classList.remove("tersembunyi");
+}
+function tutupModal() {
+  document.getElementById("modal-latar").classList.add("tersembunyi");
+}
+document.getElementById("modal-latar").addEventListener("click", function (ev) {
+  if (ev.target === this) tutupModal();
+});
+
+/* ================= ADUAN ================= */
+let DATA_ADUAN = [];
+
+async function muatAduan() {
+  const w = document.getElementById("isi-aduan");
+  w.innerHTML = '<div class="muat">Memuat…</div>';
+  try {
+    const d = await apiGet({ action: "admin_aduan", token: TOKEN });
+    DATA_ADUAN = d.items || [];
+    if (!DATA_ADUAN.length) { w.innerHTML = '<div class="muat">Belum ada aduan masuk.</div>'; return; }
+    w.innerHTML =
+      '<div class="tabel-bungkus"><table class="tabel"><thead><tr>' +
+      "<th>Tiket</th><th>Tanggal</th><th>Sekolah</th><th>Kategori</th><th>Pelapor</th><th>Status</th><th></th>" +
+      "</tr></thead><tbody>" +
+      DATA_ADUAN.map(function (a, i) {
+        return "<tr>" +
+          "<td><b>" + escapeHtml(a.ticket_id) + "</b></td>" +
+          "<td>" + fmtTanggal(a.timestamp) + "</td>" +
+          "<td>" + escapeHtml(a.sekolah) + " (" + escapeHtml(a.jenjang) + ")</td>" +
+          "<td>" + escapeHtml(a.kategori) + "</td>" +
+          "<td>" + (a.anonim === "Y" ? "<i>Anonim</i>" : escapeHtml(a.nama || "-")) + "</td>" +
+          "<td>" + badgeStatus(a.status) + "</td>" +
+          '<td><button class="tombol kecil netral" onclick="detailAduan(' + i + ')">Detail</button></td>' +
+          "</tr>";
+      }).join("") +
+      "</tbody></table></div>";
+  } catch (e) { w.innerHTML = '<div class="peringatan">' + escapeHtml(pesanGalat(e)) + "</div>"; }
+}
+
+function detailAduan(i) {
+  const a = DATA_ADUAN[i];
+  bukaModal(
+    "<h3>Aduan " + escapeHtml(a.ticket_id) + "</h3>" +
+    '<div class="detail-baris"><b>Tanggal Masuk</b><span>' + fmtTanggal(a.timestamp) + "</span></div>" +
+    '<div class="detail-baris"><b>Pelapor</b><span>' + (a.anonim === "Y" ? "Anonim" : escapeHtml(a.nama || "-") + " (" + escapeHtml(a.peran || "-") + ")") + "</span></div>" +
+    (a.anonim !== "Y" ? '<div class="detail-baris"><b>Kontak</b><span>' + escapeHtml(a.kontak || "-") + "</span></div>" : "") +
+    '<div class="detail-baris"><b>Sekolah</b><span>' + escapeHtml(a.sekolah) + " (" + escapeHtml(a.jenjang) + ")</span></div>" +
+    '<div class="detail-baris"><b>Kategori</b><span>' + escapeHtml(a.kategori) + "</span></div>" +
+    '<div class="detail-baris"><b>Uraian</b><span>' + escapeHtml(a.uraian) + "</span></div>" +
+    '<div class="detail-baris"><b>Waktu Kejadian</b><span>' + (a.waktu_kejadian ? fmtTanggal(a.waktu_kejadian) : "-") + "</span></div>" +
+    '<div class="detail-baris"><b>Tempat</b><span>' + escapeHtml(a.tempat || "-") + "</span></div>" +
+    '<div class="detail-baris"><b>Pihak Terlibat</b><span>' + escapeHtml(a.pihak_terlibat || "-") + "</span></div>" +
+    '<div class="detail-baris"><b>Saksi</b><span>' + escapeHtml(a.saksi || "-") + "</span></div>" +
+    '<div class="field" style="margin-top:18px"><label>Status Penanganan</label>' +
+    '<select id="m-status">' +
+    ["Diterima","Diverifikasi","Ditindaklanjuti","Dirujuk","Selesai","Spam"].map(function (s) {
+      return '<option' + (a.status === s ? " selected" : "") + ">" + s + "</option>";
+    }).join("") +
+    "</select></div>" +
+    '<div class="field"><label>Catatan Penanganan</label><textarea id="m-catatan" style="min-height:80px">' + escapeHtml(a.catatan_admin || "") + "</textarea></div>" +
+    '<div class="peringatan" id="m-error" style="display:none"></div>' +
+    '<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">' +
+    '<button class="tombol netral" onclick="tutupModal()">Tutup</button>' +
+    '<button class="tombol" id="m-simpan" onclick="simpanAduan(\'' + escapeHtml(a.ticket_id) + "')\">Simpan Perubahan</button>" +
+    "</div>"
+  );
+}
+
+async function simpanAduan(ticket) {
+  const tombol = document.getElementById("m-simpan");
+  tombol.disabled = true; tombol.textContent = "Menyimpan…";
+  try {
+    await apiPost({
+      action: "aduan_update",
+      token: TOKEN,
+      ticket_id: ticket,
+      status: document.getElementById("m-status").value,
+      catatan_admin: document.getElementById("m-catatan").value.trim(),
+    });
+    tutupModal();
+    muatAduan();
+  } catch (e) {
+    const err = document.getElementById("m-error");
+    err.textContent = pesanGalat(e); err.style.display = "block";
+    tombol.disabled = false; tombol.textContent = "Simpan Perubahan";
+  }
+}
+
+/* ================= MONITORING ================= */
+const NAMA_INDIKATOR = {
+  tata_tertib: "Tata tertib & kode etik ditetapkan",
+  kesepakatan_kelas: "Kesepakatan kelas melibatkan murid",
+  edukasi_warga: "Edukasi warga sekolah berjalan",
+  pembagian_peran: "Pembagian peran warga sekolah",
+  kanal_internal: "Kanal pelaporan internal tersedia",
+  modul_pkh: "Modul Pembiasaan Hebat diimplementasikan",
+  panduan_ortu: "Panduan orang tua disosialisasikan",
+  kemitraan: "Kemitraan orang tua & komite terbangun",
+};
+
+async function muatMonitoring() {
+  const w = document.getElementById("isi-monitoring");
+  w.innerHTML = '<div class="muat">Memuat…</div>';
+  try {
+    const d = await apiGet({ action: "admin_monitoring", token: TOKEN });
+    const r = d.rekap;
+    let html =
+      '<div class="rekap-grid">' +
+      '<div class="rekap-kartu"><b>' + r.total_sekolah + "</b><span>Sekolah Telah Lapor</span></div>" +
+      '<div class="rekap-kartu"><b>' + (r.per_jenjang.PAUD || 0) + "</b><span>PAUD</span></div>" +
+      '<div class="rekap-kartu"><b>' + (r.per_jenjang.SD || 0) + "</b><span>SD</span></div>" +
+      '<div class="rekap-kartu"><b>' + (r.per_jenjang.SMP || 0) + "</b><span>SMP</span></div>" +
+      "</div>";
+
+    html += '<h3 style="color:var(--biru-900);margin:8px 0 14px">Capaian per Indikator</h3>';
+    Object.keys(NAMA_INDIKATOR).forEach(function (k) {
+      const persen = r.total_sekolah ? Math.round(((r.indikator[k] || 0) / r.total_sekolah) * 100) : 0;
+      html +=
+        '<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:4px">' +
+        "<span>" + NAMA_INDIKATOR[k] + "</span><span>" + (r.indikator[k] || 0) + " sekolah (" + persen + "%)</span></div>" +
+        '<div class="bar-bungkus"><div class="bar-isi" style="width:' + Math.max(persen, 4) + '%">' + persen + "%</div></div></div>";
+    });
+
+    html += '<h3 style="color:var(--biru-900);margin:26px 0 14px">Sekolah per Kecamatan</h3>';
+    html += '<div class="tabel-bungkus"><table class="tabel"><thead><tr><th>Kecamatan</th><th>Jumlah Sekolah Lapor</th></tr></thead><tbody>';
+    Object.keys(r.per_kecamatan).sort().forEach(function (kec) {
+      html += "<tr><td>" + escapeHtml(kec) + "</td><td>" + r.per_kecamatan[kec] + "</td></tr>";
+    });
+    html += "</tbody></table></div>";
+
+    html += '<h3 style="color:var(--biru-900);margin:26px 0 14px">Data Terbaru per Sekolah</h3>';
+    html += '<div class="tabel-bungkus"><table class="tabel"><thead><tr><th>NPSN</th><th>Sekolah</th><th>Jenjang</th><th>Kecamatan</th><th>Pengisi</th><th>Jabatan</th><th>Terakhir Lapor</th><th>Capaian</th></tr></thead><tbody>';
+    (d.items || []).forEach(function (m) {
+      html += "<tr><td>" + escapeHtml(m.npsn) + "</td><td>" + escapeHtml(m.sekolah) + "</td><td>" + escapeHtml(m.jenjang) +
+        "</td><td>" + escapeHtml(m.kecamatan) + "</td><td>" + escapeHtml(m.nama_pengisi) + "</td><td>" + escapeHtml(m.jabatan_pengisi) +
+        "</td><td>" + fmtTanggal(m.timestamp) + "</td><td>" + m.capaian + "/8</td></tr>";
+    });
+    html += "</tbody></table></div>";
+    html += '<p class="bantuan" style="margin-top:14px">💡 Data lengkap dapat dibuka langsung di Google Sheets untuk diolah menjadi laporan tahunan Pokja.</p>';
+    w.innerHTML = html;
+  } catch (e) { w.innerHTML = '<div class="peringatan">' + escapeHtml(pesanGalat(e)) + "</div>"; }
+}
+
+/* ================= BERITA ================= */
+let DATA_BERITA = [];
+
+async function muatBerita() {
+  const w = document.getElementById("isi-berita");
+  w.innerHTML = '<div class="muat">Memuat…</div>';
+  try {
+    const d = await apiGet({ action: "admin_berita", token: TOKEN });
+    DATA_BERITA = d.items || [];
+    if (!DATA_BERITA.length) { w.innerHTML = '<div class="muat">Belum ada berita. Klik "＋ Tulis Berita".</div>'; return; }
+    w.innerHTML =
+      '<div class="tabel-bungkus"><table class="tabel"><thead><tr><th>Tanggal</th><th>Judul</th><th>Kategori</th><th>Status</th><th></th></tr></thead><tbody>' +
+      DATA_BERITA.map(function (b, i) {
+        return "<tr><td>" + fmtTanggal(b.tanggal) + "</td><td><b>" + escapeHtml(b.judul) + "</b></td><td>" + escapeHtml(b.kategori) +
+          "</td><td>" + badgeStatus(b.status) + "</td>" +
+          '<td style="white-space:nowrap"><button class="tombol kecil netral" onclick="bukaFormBerita(' + i + ')">Edit</button> ' +
+          '<button class="tombol kecil bahaya" onclick="hapusBerita(\'' + escapeHtml(b.id) + "')\">Hapus</button></td></tr>";
+      }).join("") +
+      "</tbody></table></div>";
+  } catch (e) { w.innerHTML = '<div class="peringatan">' + escapeHtml(pesanGalat(e)) + "</div>"; }
+}
+
+function bukaFormBerita(i) {
+  const b = i === undefined ? { id: "", judul: "", kategori: "Kegiatan Pokja", isi: "", gambar_url: "", status: "Tayang", tanggal: new Date().toISOString().slice(0, 10) } : DATA_BERITA[i];
+  bukaModal(
+    "<h3>" + (i === undefined ? "Tulis Berita Baru" : "Edit Berita") + "</h3>" +
+    '<input type="hidden" id="b-id" value="' + escapeHtml(b.id) + '">' +
+    '<div class="field"><label>Judul</label><input type="text" id="b-judul" value="' + escapeHtml(b.judul) + '"></div>' +
+    '<div class="baris2">' +
+    '<div class="field"><label>Tanggal</label><input type="date" id="b-tanggal" value="' + escapeHtml(String(b.tanggal).slice(0, 10)) + '"></div>' +
+    '<div class="field"><label>Kategori</label><select id="b-kategori">' +
+    ["Kegiatan Pokja","Praktik Baik","Edukasi","Pengumuman"].map(function (k) {
+      return "<option" + (b.kategori === k ? " selected" : "") + ">" + k + "</option>";
+    }).join("") + "</select></div></div>" +
+    '<div class="field"><label>Isi Berita</label><textarea id="b-isi" style="min-height:160px">' + escapeHtml(b.isi) + "</textarea>" +
+    '<div class="bantuan">Pisahkan paragraf dengan baris kosong (Enter dua kali).</div></div>' +
+    '<div class="field"><label>URL Gambar <span class="ops">— opsional</span></label><input type="url" id="b-gambar" value="' + escapeHtml(b.gambar_url || "") + '" placeholder="https://...">' +
+    '<div class="bantuan">Bisa memakai tautan gambar dari Google Drive (atur akses: siapa saja dengan link).</div></div>' +
+    '<div class="field"><label>Status</label><select id="b-status">' +
+    ["Tayang","Draft"].map(function (s) { return "<option" + (b.status === s ? " selected" : "") + ">" + s + "</option>"; }).join("") +
+    "</select></div>" +
+    '<div class="peringatan" id="m-error" style="display:none"></div>' +
+    '<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">' +
+    '<button class="tombol netral" onclick="tutupModal()">Batal</button>' +
+    '<button class="tombol" id="m-simpan" onclick="simpanBerita()">Simpan</button></div>'
+  );
+}
+
+async function simpanBerita() {
+  const tombol = document.getElementById("m-simpan");
+  const err = document.getElementById("m-error");
+  const data = {
+    action: "berita_simpan",
+    token: TOKEN,
+    id: document.getElementById("b-id").value,
+    judul: document.getElementById("b-judul").value.trim(),
+    tanggal: document.getElementById("b-tanggal").value,
+    kategori: document.getElementById("b-kategori").value,
+    isi: document.getElementById("b-isi").value.trim(),
+    gambar_url: document.getElementById("b-gambar").value.trim(),
+    status: document.getElementById("b-status").value,
+  };
+  if (!data.judul || !data.isi) {
+    err.textContent = "Judul dan isi berita wajib diisi."; err.style.display = "block"; return;
+  }
+  tombol.disabled = true; tombol.textContent = "Menyimpan…";
+  try { await apiPost(data); tutupModal(); muatBerita(); }
+  catch (e) {
+    err.textContent = pesanGalat(e); err.style.display = "block";
+    tombol.disabled = false; tombol.textContent = "Simpan";
+  }
+}
+
+async function hapusBerita(id) {
+  if (!confirm("Yakin menghapus berita ini? Tindakan tidak dapat dibatalkan.")) return;
+  try { await apiPost({ action: "berita_hapus", token: TOKEN, id: id }); muatBerita(); }
+  catch (e) { alert(pesanGalat(e)); }
+}
+
+/* ================= DOKUMEN ================= */
+let DATA_DOKUMEN = [];
+
+async function muatDokumen() {
+  const w = document.getElementById("isi-dokumen");
+  w.innerHTML = '<div class="muat">Memuat…</div>';
+  try {
+    const d = await apiGet({ action: "admin_dokumen", token: TOKEN });
+    DATA_DOKUMEN = d.items || [];
+    if (!DATA_DOKUMEN.length) { w.innerHTML = '<div class="muat">Belum ada dokumen. Klik "＋ Tambah Dokumen".</div>'; return; }
+    w.innerHTML =
+      '<div class="tabel-bungkus"><table class="tabel"><thead><tr><th>Judul</th><th>Kategori</th><th>Tautan</th><th></th></tr></thead><tbody>' +
+      DATA_DOKUMEN.map(function (x, i) {
+        return "<tr><td><b>" + escapeHtml(x.judul) + "</b><br><span style='color:var(--teks-muda);font-size:12.5px'>" + escapeHtml(x.deskripsi || "") + "</span></td>" +
+          "<td>" + escapeHtml(x.kategori) + "</td>" +
+          '<td><a class="tautan" href="' + escapeHtml(x.file_url) + '" target="_blank" rel="noopener">Buka ↗</a></td>' +
+          '<td style="white-space:nowrap"><button class="tombol kecil netral" onclick="bukaFormDokumen(' + i + ')">Edit</button> ' +
+          '<button class="tombol kecil bahaya" onclick="hapusDokumen(\'' + escapeHtml(x.id) + "')\">Hapus</button></td></tr>";
+      }).join("") +
+      "</tbody></table></div>";
+  } catch (e) { w.innerHTML = '<div class="peringatan">' + escapeHtml(pesanGalat(e)) + "</div>"; }
+}
+
+function bukaFormDokumen(i) {
+  const x = i === undefined ? { id: "", judul: "", kategori: "Regulasi", deskripsi: "", file_url: "" } : DATA_DOKUMEN[i];
+  bukaModal(
+    "<h3>" + (i === undefined ? "Tambah Dokumen" : "Edit Dokumen") + "</h3>" +
+    '<input type="hidden" id="d-id" value="' + escapeHtml(x.id) + '">' +
+    '<div class="field"><label>Judul Dokumen</label><input type="text" id="d-judul" value="' + escapeHtml(x.judul) + '" placeholder="Contoh: Permendikdasmen No. 6 Tahun 2026"></div>' +
+    '<div class="field"><label>Kategori</label><select id="d-kategori">' +
+    ["Regulasi","Pedoman","Panduan","Materi Sosialisasi","SK & Administrasi","Lainnya"].map(function (k) {
+      return "<option" + (x.kategori === k ? " selected" : "") + ">" + k + "</option>";
+    }).join("") + "</select></div>" +
+    '<div class="field"><label>Deskripsi Singkat</label><input type="text" id="d-deskripsi" value="' + escapeHtml(x.deskripsi || "") + '"></div>' +
+    '<div class="field"><label>Tautan File</label><input type="url" id="d-url" value="' + escapeHtml(x.file_url || "") + '" placeholder="https://drive.google.com/...">' +
+    '<div class="bantuan">Unggah PDF ke Google Drive Pokja → klik kanan → Bagikan → "Siapa saja yang memiliki link" → salin link ke sini.</div></div>' +
+    '<div class="peringatan" id="m-error" style="display:none"></div>' +
+    '<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">' +
+    '<button class="tombol netral" onclick="tutupModal()">Batal</button>' +
+    '<button class="tombol" id="m-simpan" onclick="simpanDokumen()">Simpan</button></div>'
+  );
+}
+
+async function simpanDokumen() {
+  const tombol = document.getElementById("m-simpan");
+  const err = document.getElementById("m-error");
+  const data = {
+    action: "dokumen_simpan",
+    token: TOKEN,
+    id: document.getElementById("d-id").value,
+    judul: document.getElementById("d-judul").value.trim(),
+    kategori: document.getElementById("d-kategori").value,
+    deskripsi: document.getElementById("d-deskripsi").value.trim(),
+    file_url: document.getElementById("d-url").value.trim(),
+  };
+  if (!data.judul || !data.file_url) {
+    err.textContent = "Judul dan tautan file wajib diisi."; err.style.display = "block"; return;
+  }
+  tombol.disabled = true; tombol.textContent = "Menyimpan…";
+  try { await apiPost(data); tutupModal(); muatDokumen(); }
+  catch (e) {
+    err.textContent = pesanGalat(e); err.style.display = "block";
+    tombol.disabled = false; tombol.textContent = "Simpan";
+  }
+}
+
+async function hapusDokumen(id) {
+  if (!confirm("Yakin menghapus dokumen ini dari daftar?")) return;
+  try { await apiPost({ action: "dokumen_hapus", token: TOKEN, id: id }); muatDokumen(); }
+  catch (e) { alert(pesanGalat(e)); }
+}
+
+/* ================= UTIL ================= */
+function pesanGalat(e) {
+  if (e.message === "API_BELUM_DIKONFIGURASI") return "Mode draft: backend belum terhubung (isi config.js dulu).";
+  if (e.message === "TOKEN_SALAH") return "Sesi berakhir atau kode akses salah. Silakan keluar lalu masuk kembali.";
+  return "Terjadi kesalahan: " + e.message;
+}
+</script>
+</body>
+</html>

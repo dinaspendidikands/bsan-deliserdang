@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitoring Sekolah — BSAN Deli Serdang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wadah nav-isi">
+    <a href="index.html" class="brand">
+      <div class="logo">B</div>
+      <div>BSAN Deli Serdang<small>Pokja Budaya Sekolah Aman &amp; Nyaman</small></div>
+    </a>
+    <div class="menu" id="menu">
+      <a href="tentang.html">Tentang BSAN</a>
+      <a href="dokumen.html">Dokumen</a>
+      <a href="berita.html">Berita</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="aduan.html" class="tombol">Lapor Aduan</a>
+    </div>
+    <button class="burger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<header class="hero-mini">
+  <div class="wadah">
+    <h1>📋 Monitoring Penyelenggaraan BSAN</h1>
+    <p>Diisi oleh sekolah (PAUD/SD/SMP) se-Kabupaten Deli Serdang sebagai bahan pemantauan berkala Pokja sesuai Kepmendikdasmen 17/2026 BAB VI.</p>
+  </div>
+</header>
+
+<section class="seksi rapat">
+  <div class="wadah">
+
+    <div class="form-kartu" id="form-bungkus">
+      <div class="info-kotak">
+        ℹ️ Form ini boleh diisi ulang bila ada pembaruan — data terbaru per NPSN yang akan dihitung dalam rekap Pokja.
+      </div>
+
+      <form id="form-monitoring" novalidate>
+
+        <div class="form-bagian">
+          <h3>1. Identitas Sekolah</h3>
+          <div class="baris2">
+            <div class="field">
+              <label for="npsn">NPSN <span style="color:var(--merah)">*</span></label>
+              <input type="text" id="npsn" name="npsn" required placeholder="8 digit NPSN" maxlength="8" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="sekolah">Nama Sekolah <span style="color:var(--merah)">*</span></label>
+              <input type="text" id="sekolah" name="sekolah" required placeholder="Nama satuan pendidikan">
+            </div>
+          </div>
+          <div class="baris2">
+            <div class="field">
+              <label for="jenjang">Jenjang <span style="color:var(--merah)">*</span></label>
+              <select id="jenjang" name="jenjang" required>
+                <option value="">— Pilih jenjang —</option>
+                <option>PAUD</option>
+                <option>SD</option>
+                <option>SMP</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="kecamatan">Kecamatan <span style="color:var(--merah)">*</span></label>
+              <select id="kecamatan" name="kecamatan" required>
+                <option value="">— Pilih kecamatan —</option>
+                <option>Bangun Purba</option><option>Batang Kuis</option><option>Beringin</option>
+                <option>Biru-Biru</option><option>Deli Tua</option><option>Galang</option>
+                <option>Gunung Meriah</option><option>Hamparan Perak</option><option>Kutalimbaru</option>
+                <option>Labuhan Deli</option><option>Lubuk Pakam</option><option>Namorambe</option>
+                <option>Pagar Merbau</option><option>Pancur Batu</option><option>Pantai Labu</option>
+                <option>Patumbak</option><option>Percut Sei Tuan</option><option>Sibolangit</option>
+                <option>Sinembah Tanjung Muda Hilir</option><option>Sinembah Tanjung Muda Hulu</option>
+                <option>Sunggal</option><option>Tanjung Morawa</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-bagian">
+          <h3>2. Identitas Pengisi</h3>
+          <div class="baris2">
+            <div class="field">
+              <label for="nama_pengisi">Nama Pengisi <span style="color:var(--merah)">*</span></label>
+              <input type="text" id="nama_pengisi" name="nama_pengisi" required placeholder="Nama lengkap">
+            </div>
+            <div class="field">
+              <label for="jabatan_pengisi">Jabatan Pengisi <span style="color:var(--merah)">*</span></label>
+              <select id="jabatan_pengisi" name="jabatan_pengisi" required>
+                <option value="">— Pilih jabatan —</option>
+                <option>Kepala Sekolah</option>
+                <option>Guru</option>
+                <option>Tenaga Administrasi Sekolah</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="kontak">Kontak (HP/WA) <span style="color:var(--merah)">*</span></label>
+            <input type="text" id="kontak" name="kontak" required placeholder="Contoh: 0812xxxxxxx">
+          </div>
+        </div>
+
+        <div class="form-bagian">
+          <h3>3. Indikator Penyelenggaraan BSAN</h3>
+          <p class="bantuan" style="margin-bottom:14px">Centang indikator yang <b>sudah dilaksanakan</b> di sekolah Anda.</p>
+          <div class="ceklis">
+            <label><input type="checkbox" name="ind" value="tata_tertib"> Tata tertib dan kode etik sekolah telah ditetapkan dengan memperhatikan 9 asas BSAN</label>
+            <label><input type="checkbox" name="ind" value="kesepakatan_kelas"> Kesepakatan kelas telah disusun dengan melibatkan murid</label>
+            <label><input type="checkbox" name="ind" value="edukasi_warga"> Program edukasi BSAN bagi warga sekolah telah berjalan</label>
+            <label><input type="checkbox" name="ind" value="pembagian_peran"> Pembagian peran warga sekolah telah ditetapkan (sesuai Pasal 18 Permendikdasmen 6/2026)</label>
+            <label><input type="checkbox" name="ind" value="kanal_internal"> Kanal pelaporan internal sekolah telah tersedia dan disosialisasikan</label>
+            <label><input type="checkbox" name="ind" value="modul_pkh"> Modul Pembiasaan Hebat (PKH) telah diimplementasikan sebagai kokurikuler</label>
+            <label><input type="checkbox" name="ind" value="panduan_ortu"> Buku panduan pendampingan orang tua/wali telah disosialisasikan</label>
+            <label><input type="checkbox" name="ind" value="kemitraan"> Kemitraan dengan orang tua/wali dan komite sekolah telah terbangun (forum komunikasi/kelas orang tua)</label>
+          </div>
+          <div class="field" style="margin-top:18px">
+            <label for="catatan">Catatan / Kendala <span class="ops">— opsional</span></label>
+            <textarea id="catatan" name="catatan" style="min-height:80px" placeholder="Kendala atau kebutuhan dukungan dari Pokja…"></textarea>
+          </div>
+        </div>
+
+        <!-- Honeypot -->
+        <div style="position:absolute;left:-9999px" aria-hidden="true">
+          <input type="text" name="website" id="hp-website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="peringatan" id="form-error" style="display:none"></div>
+        <button type="submit" class="tombol" id="tombol-kirim" style="width:100%;padding:15px">Kirim Laporan Monitoring</button>
+      </form>
+    </div>
+
+    <div class="form-kartu tersembunyi" id="sukses-bungkus">
+      <div class="sukses-kotak">
+        <div style="font-size:46px">✅</div>
+        <h2 style="color:var(--biru-900);margin:10px 0 4px">Laporan Monitoring Terkirim</h2>
+        <p style="color:var(--teks-muda)">Terima kasih. Data sekolah Anda telah tercatat dan menjadi bahan pemantauan berkala Pokja BSAN Deli Serdang.</p>
+        <div style="margin-top:20px">
+          <a href="index.html" class="tombol">Kembali ke Beranda</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wadah">
+    <div class="footer-bawah" style="border:none;padding:0">© 2026 Pokja BSAN Kabupaten Deli Serdang · #SehatCerdasBerkarakter</div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+document.getElementById("form-monitoring").addEventListener("submit", async function (ev) {
+  ev.preventDefault();
+  const f = ev.target;
+  const err = document.getElementById("form-error");
+  const tombol = document.getElementById("tombol-kirim");
+  err.style.display = "none";
+
+  const indikator = {};
+  f.querySelectorAll('input[name="ind"]').forEach(function (c) {
+    indikator[c.value] = c.checked ? "Ya" : "Tidak";
+  });
+
+  const data = {
+    action: "monitoring_baru",
+    npsn: f.npsn.value.trim(),
+    sekolah: f.sekolah.value.trim(),
+    jenjang: f.jenjang.value,
+    kecamatan: f.kecamatan.value,
+    nama_pengisi: f.nama_pengisi.value.trim(),
+    jabatan_pengisi: f.jabatan_pengisi.value,
+    kontak: f.kontak.value.trim(),
+    indikator: indikator,
+    catatan: f.catatan.value.trim(),
+    website: document.getElementById("hp-website").value, // honeypot
+  };
+
+  if (!data.npsn || !data.sekolah || !data.jenjang || !data.kecamatan || !data.nama_pengisi || !data.jabatan_pengisi || !data.kontak) {
+    err.textContent = "Mohon lengkapi seluruh kolom bertanda *.";
+    err.style.display = "block";
+    return;
+  }
+  if (!/^\d{8}$/.test(data.npsn)) {
+    err.textContent = "NPSN harus terdiri dari 8 digit angka.";
+    err.style.display = "block";
+    return;
+  }
+
+  tombol.disabled = true;
+  tombol.textContent = "Mengirim…";
+  try {
+    await apiPost(data);
+    document.getElementById("form-bungkus").classList.add("tersembunyi");
+    document.getElementById("sukses-bungkus").classList.remove("tersembunyi");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (e) {
+    err.textContent =
+      e.message === "API_BELUM_DIKONFIGURASI"
+        ? "Mode draft: backend belum terhubung, laporan belum dapat dikirim."
+        : "Gagal mengirim laporan: " + e.message + ". Coba lagi.";
+    err.style.display = "block";
+    tombol.disabled = false;
+    tombol.textContent = "Kirim Laporan Monitoring";
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cek Status Aduan — BSAN Deli Serdang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wadah nav-isi">
+    <a href="index.html" class="brand">
+      <div class="logo">B</div>
+      <div>BSAN Deli Serdang<small>Pokja Budaya Sekolah Aman &amp; Nyaman</small></div>
+    </a>
+    <div class="menu" id="menu">
+      <a href="tentang.html">Tentang BSAN</a>
+      <a href="dokumen.html">Dokumen</a>
+      <a href="berita.html">Berita</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="aduan.html" class="tombol">Lapor Aduan</a>
+    </div>
+    <button class="burger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<header class="hero-mini">
+  <div class="wadah">
+    <h1>🎫 Cek Status Aduan</h1>
+    <p>Masukkan nomor tiket yang Anda terima saat mengirim aduan. Demi kerahasiaan, hanya status penanganan yang ditampilkan — bukan isi aduan.</p>
+  </div>
+</header>
+
+<section class="seksi rapat">
+  <div class="wadah">
+    <div class="form-kartu" style="max-width:560px">
+      <form id="form-cek">
+        <div class="field">
+          <label for="tiket">Nomor Tiket</label>
+          <input type="text" id="tiket" placeholder="Contoh: BSAN-20260610-A1B2" autocomplete="off" style="text-transform:uppercase">
+        </div>
+        <button type="submit" class="tombol" id="tombol-cek" style="width:100%">Cek Status</button>
+      </form>
+      <div id="hasil" style="margin-top:24px"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wadah">
+    <div class="footer-bawah" style="border:none;padding:0">© 2026 Pokja BSAN Kabupaten Deli Serdang · #SehatCerdasBerkarakter</div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+document.getElementById("form-cek").addEventListener("submit", async function (ev) {
+  ev.preventDefault();
+  const hasil = document.getElementById("hasil");
+  const tombol = document.getElementById("tombol-cek");
+  const tiket = document.getElementById("tiket").value.trim().toUpperCase();
+  if (!tiket) {
+    hasil.innerHTML = '<div class="peringatan" style="margin:0">Mohon masukkan nomor tiket.</div>';
+    return;
+  }
+  tombol.disabled = true;
+  tombol.textContent = "Memeriksa…";
+  try {
+    const d = await apiGet({ action: "status", ticket: tiket });
+    if (!d.found) {
+      hasil.innerHTML = '<div class="peringatan" style="margin:0">Nomor tiket tidak ditemukan. Periksa kembali penulisannya.</div>';
+    } else {
+      hasil.innerHTML =
+        '<div class="sukses-kotak" style="padding:24px">' +
+        '<p style="font-weight:700;color:var(--biru-900);font-size:17px;margin-bottom:6px">' + escapeHtml(tiket) + "</p>" +
+        '<p style="margin-bottom:10px">Status saat ini: ' + badgeStatus(d.status) + "</p>" +
+        '<p style="font-size:13.5px;color:var(--teks-muda)">Diterima: ' + fmtTanggal(d.tanggal_masuk) +
+        (d.updated_at ? " · Pembaruan terakhir: " + fmtTanggal(d.updated_at) : "") + "</p>" +
+        "</div>" +
+        '<div class="info-kotak" style="margin:16px 0 0;font-size:13px">Tahapan status: Diterima → Diverifikasi → Ditindaklanjuti/Dirujuk → Selesai.</div>';
+    }
+  } catch (e) {
+    hasil.innerHTML =
+      '<div class="peringatan" style="margin:0">' +
+      (e.message === "API_BELUM_DIKONFIGURASI"
+        ? "Mode draft: backend belum terhubung."
+        : "Gagal memeriksa status: " + escapeHtml(e.message)) +
+      "</div>";
+  }
+  tombol.disabled = false;
+  tombol.textContent = "Cek Status";
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Berita — BSAN Deli Serdang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wadah nav-isi">
+    <a href="index.html" class="brand">
+      <div class="logo">B</div>
+      <div>BSAN Deli Serdang<small>Pokja Budaya Sekolah Aman &amp; Nyaman</small></div>
+    </a>
+    <div class="menu" id="menu">
+      <a href="tentang.html">Tentang BSAN</a>
+      <a href="dokumen.html">Dokumen</a>
+      <a href="berita.html">Berita</a>
+      <a href="monitoring.html">Monitoring</a>
+      <a href="aduan.html" class="tombol">Lapor Aduan</a>
+    </div>
+    <button class="burger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<section class="seksi rapat">
+  <div class="wadah">
+    <div class="artikel" id="artikel"><div class="muat">Memuat artikel…</div></div>
+    <p style="text-align:center;margin-top:40px"><a href="berita.html" class="tombol netral">← Kembali ke Daftar Berita</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wadah">
+    <div class="footer-bawah" style="border:none;padding:0">© 2026 Pokja BSAN Kabupaten Deli Serdang · #SehatCerdasBerkarakter</div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+(async function () {
+  const wadah = document.getElementById("artikel");
+  const id = paramUrl("id");
+  if (!id) { wadah.innerHTML = '<div class="peringatan">Artikel tidak ditemukan.</div>'; return; }
+  try {
+    const d = await apiGet({ action: "berita_detail", id: id });
+    const b = d.item;
+    if (!b) { wadah.innerHTML = '<div class="peringatan">Artikel tidak ditemukan.</div>'; return; }
+    document.title = b.judul + " — BSAN Deli Serdang";
+    const paragraf = String(b.isi || "").split(/\n+/).map(function (p) {
+      return "<p>" + escapeHtml(p) + "</p>";
+    }).join("");
+    wadah.innerHTML =
+      '<span class="meta">' + escapeHtml(b.kategori) + " · " + fmtTanggal(b.tanggal) + "</span>" +
+      "<h1>" + escapeHtml(b.judul) + "</h1>" +
+      (b.gambar_url ? '<img src="' + escapeHtml(b.gambar_url) + '" alt="" style="border-radius:14px;margin-top:18px">' : "") +
+      '<div class="badan">' + paragraf + "</div>";
+  } catch (e) {
+    if (e.message === "API_BELUM_DIKONFIGURASI") {
+      pesanApiBelumSiap(wadah, "isi artikel");
+    } else {
+      wadah.innerHTML = '<div class="peringatan">Gagal memuat artikel. Coba muat ulang halaman.</div>';
+    }
+  }
+})();
+</script>
+</body>
+</html>
